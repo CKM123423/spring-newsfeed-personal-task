@@ -1,6 +1,5 @@
 package com.sparta.areadevelopment.dto;
 
-import com.sparta.areadevelopment.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -27,5 +26,12 @@ public class UpdateUserDto {
     private String info;
     private String password;
 
+    @Builder
+    public UpdateUserDto(String nickname, String email, String info, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.info = info;
+        this.password = password;
+    }
 }
 
