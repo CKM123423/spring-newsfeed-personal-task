@@ -6,6 +6,7 @@ import com.sparta.areadevelopment.dto.CommentResponseDto;
 import com.sparta.areadevelopment.entity.CustomUserDetails;
 import com.sparta.areadevelopment.service.CommentService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,21 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/boards")
+@RequiredArgsConstructor
 public class CommentController {
 
     /**
      * DTO의 생성자 매서드
      */
     private final CommentService commentService;
-
-    /**
-     * 지정된 서비스로 비지니스 로직을 수행합니다.
-     *
-     * @param commentService 댓글기능에 대한 서비스 계층 객체입니다.
-     */
-    private CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     /**
      * 게시글 고유번호를 받아 해당하는 게시글에 종속되는 댓글을 작성합니다.
