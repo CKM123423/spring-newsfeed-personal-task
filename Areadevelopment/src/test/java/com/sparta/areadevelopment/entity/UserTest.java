@@ -10,7 +10,6 @@ import com.sparta.areadevelopment.enums.AuthEnum;
 import com.sparta.areadevelopment.enums.StatusEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +31,7 @@ class UserTest {
     }
 
     @Test
-    @Order(1)
-    @DisplayName("유저 생성 테스트")
+    @DisplayName("User 생성 테스트")
     void test1() {
         // Given
         // setUp() 에서 진행됨
