@@ -11,6 +11,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +23,9 @@ class BoardRequestDtoTest {
 
     private BoardRequestDto requestDto;
 
-    @BeforeAll
+    @BeforeEach
     @DisplayName("검증 필요 객체 주입")
-    static void setUp() {
+    void setUp() {
         factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
         objectMapper = new ObjectMapper();
