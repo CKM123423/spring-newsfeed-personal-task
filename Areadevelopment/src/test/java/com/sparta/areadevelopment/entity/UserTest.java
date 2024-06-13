@@ -34,7 +34,7 @@ class UserTest {
     @DisplayName("User 생성 테스트")
     void test1() {
         // Given
-        // setUp() 에서 진행됨
+        // setUp() 에서 주어짐
 
         // When
         // 객체가 생성되면서 진행됨
@@ -53,7 +53,7 @@ class UserTest {
     // updateInfo 메서드 자체가 인자로 받는게 Dto 여서 정확한 테스트를 위해 Dto 를 생성후 사용
     // UpdateUserDto 에 Setter 와 생성자가 아예 존재 하지않아서 @Builder 적용 후 테스트
     @Test
-    @DisplayName("updateInfo - 전체 변경")
+    @DisplayName("updateInfo - 정보 전체 변경 테스트")
     void test2() {
         // Given
         UpdateUserDto updateUserDto = UpdateUserDto.builder()
