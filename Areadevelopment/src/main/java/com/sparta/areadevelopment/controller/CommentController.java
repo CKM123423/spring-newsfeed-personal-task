@@ -5,6 +5,7 @@ import com.sparta.areadevelopment.dto.CommentRequestDto;
 import com.sparta.areadevelopment.dto.CommentResponseDto;
 import com.sparta.areadevelopment.entity.CustomUserDetails;
 import com.sparta.areadevelopment.service.CommentService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class CommentController {
     @PostMapping("/{boardId}/comments")
     public ResponseEntity<CommentResponseDto> addComment(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long boardId, @RequestBody CommentRequestDto requestDto) {
+            @PathVariable Long boardId, @Valid @RequestBody CommentRequestDto requestDto) {
         return ResponseEntity.ok().body(commentService.addComment(userDetails.getUser(), boardId,
                 requestDto));
     }
@@ -74,11 +75,10 @@ public class CommentController {
     @PutMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
-            @PathVariable Long boardId) {
+            @PathVariable Long commentId, @Valid @RequestBody CommentRequestDto requestDto) {
         return ResponseEntity.ok()
                 .body(commentService.updateComment(userDetails.getUser().getId(), commentId,
-                        requestDto, boardId));
+                        requestDto));
     }
 
     /**
@@ -90,9 +90,8 @@ public class CommentController {
      */
     @DeleteMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<String> deleteComment(
-            @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId,
-            @PathVariable Long boardId) {
+            @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {
         return ResponseEntity.ok(
-                commentService.deleteComment(userDetails.getUser().getId(), commentId, boardId));
+                commentService.deleteComment(userDetails.getUser().getId(), commentId));
     }
 }

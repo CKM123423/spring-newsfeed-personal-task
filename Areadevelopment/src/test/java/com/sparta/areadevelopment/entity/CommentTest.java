@@ -35,9 +35,9 @@ class CommentTest {
                 boardRequestDto
         );
 
-        commentRequestDto = CommentRequestDto.builder()
-                .content("Test Comment content")
-                .build();
+        commentRequestDto = new CommentRequestDto(
+                "Test Comment content"
+        );
 
         comment = new Comment(
                 commentRequestDto.getContent(),

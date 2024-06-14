@@ -3,13 +3,13 @@ package com.sparta.areadevelopment.dto;
 
 import com.sparta.areadevelopment.entity.Comment;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CommentResponseDto {
 
     /**
@@ -34,11 +34,6 @@ public class CommentResponseDto {
     private Long likeCount;
 
     /**
-     * 댓글의 삭제시간입니다.
-     */
-    private LocalDateTime deleteAt;
-
-    /**
      * 댓글의 생성시간입니다.
      */
     private LocalDateTime createdAt;
@@ -58,7 +53,6 @@ public class CommentResponseDto {
         this.boardId = comment.getBoard().getId();
         this.content = comment.getContent();
         this.likeCount = comment.getLikeCount();
-        this.deleteAt = comment.getDeletedAt();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
     }

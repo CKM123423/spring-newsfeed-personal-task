@@ -32,7 +32,7 @@ public class BoardResponseDto {
     private String content;
     private Long hits;
     private Long count;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     /**
@@ -44,7 +44,7 @@ public class BoardResponseDto {
         this.content = board.getContent();
         this.hits = board.getHits();
         this.count = board.getLikeCount();
-        this.createAt = board.getCreatedAt();
+        this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
     }
 }

@@ -62,8 +62,7 @@ public class CommentService {
      */
     @Transactional
     public CommentResponseDto updateComment(Long userId, Long commentId,
-            CommentRequestDto requestDto, Long boardId) {
-        Board board = getActiveBoardById(boardId);
+            CommentRequestDto requestDto) {
         Comment comment = getActiveCommentById(commentId);
 
         if (!comment.isCommentAuthor(userId)) {
@@ -82,8 +81,7 @@ public class CommentService {
      * @return 댓글 삭제 성공 문장
      */
     @Transactional
-    public String deleteComment(Long userId, Long commentId, Long boardId) {
-        Board board = getActiveBoardById(boardId);
+    public String deleteComment(Long userId, Long commentId) {
         Comment comment = getActiveCommentById(commentId);
 
         if (!comment.isCommentAuthor(userId)) {

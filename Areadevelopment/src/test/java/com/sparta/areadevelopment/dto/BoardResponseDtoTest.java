@@ -48,7 +48,7 @@ public class BoardResponseDtoTest {
         assertThat(responseDto.getContent()).isEqualTo("Test Content");
         assertThat(responseDto.getHits()).isEqualTo(0L);
         assertThat(responseDto.getCount()).isEqualTo(0L);
-        assertThat(responseDto.getCreateAt()).isBefore(LocalDateTime.now());
+        assertThat(responseDto.getCreatedAt()).isBefore(LocalDateTime.now());
         assertThat(responseDto.getModifiedAt()).isBefore(LocalDateTime.now());
     }
 }
