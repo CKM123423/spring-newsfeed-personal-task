@@ -5,6 +5,7 @@ import com.sparta.areadevelopment.dto.BoardResponseDto;
 import com.sparta.areadevelopment.entity.Board;
 import com.sparta.areadevelopment.entity.User;
 import com.sparta.areadevelopment.repository.BoardRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -34,73 +35,55 @@ public class BoardService {
         return new BoardResponseDto(board);
     }
 
-    // 모든 페이지 조회, 글이 있을 경우 ApiResponseDto의 data 조회
-    public Optional<Object> findAll() {
-        List<BoardResponseDto> list = boardRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc()
+    // 모든 페이지 조회, 글이 있을 경우 ApiResponseDto 의 data 조회
+    public List<BoardResponseDto> findAllBoard() {
+        return boardRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc()
                 .stream()
                 .map(BoardResponseDto::new).toList();
-
-        // 글이 없을 경우 메시지와 200 Status code 던져줌
-        if (list.isEmpty()) {
-            return Optional.of("먼저 작성하여 소식을 알려보세요!");
-        }
-
-        return Optional.of(list);
     }
 
     @Transactional(readOnly = true)
     // 최신순으로 10개씩 페이지네이션하는 Service 로직 추가.
-    public Optional<Object> findAllRecentlyPagination(int page) {
+    public List<BoardResponseDto> findAllRecentlyPagination(int page) {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
-        List<BoardResponseDto> list = boardRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc(
+        return boardRepository.findAllByDeletedAtIsNullOrderByCreatedAtDesc(
                         pageable)
                 .stream()
                 .map(BoardResponseDto::new).toList();
-
-        if (list.isEmpty()) {
-            return Optional.of("먼저 작성하여 소식을 알려보세요!");
-        }
-
-        return Optional.of(list);
     }
 
     // 좋아요 많은 순으로 조회
     @Transactional(readOnly = true)
-    public Optional<Object> findAllLikesPagination(int page) {
+    public List<BoardResponseDto> findAllLikesPagination(int page) {
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
-        List<BoardResponseDto> list = boardRepository.findAllByDeletedAtIsNullOrderByLikeCountDesc(
+        return boardRepository.findAllByDeletedAtIsNullOrderByLikeCountDesc(
                         pageable)
                 .stream()
                 .map(BoardResponseDto::new).toList();
-
-        if (list.isEmpty()) {
-            return Optional.of("먼저 작성하여 소식을 알려보세요!");
-        }
-
-        return Optional.of(list);
     }
 
     // 입력받은 기간 사이에 생성된 게시글들만 조회
     @Transactional(readOnly = true)
-    public Optional<Object> findAllDatePagination(
+    public List<BoardResponseDto> findAllDatePagination(
             int page,
-            LocalDateTime startDateTime,
-            LocalDateTime endDateTime) {
+            String startTime,
+            String endTime) {
+        // LocalDate.parse를 사용하여 문자열을 LocalDate로 파싱
+        LocalDate startDate = LocalDate.parse(startTime);
+        LocalDate endDate = LocalDate.parse(endTime);
+
+        // LocalDateTime으로 변환
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
-        List<BoardResponseDto> list =
-                boardRepository.findAllByDeletedAtIsNullAndCreatedAtBetweenOrderByCreatedAtDesc
-                                (startDateTime, endDateTime, pageable)
-                        .stream()
-                        .map(BoardResponseDto::new).toList();
-
-        if (list.isEmpty()) {
-            return Optional.of("먼저 작성하여 소식을 알려보세요!");
-        }
-        return Optional.of(list);
+        return boardRepository.findAllByDeletedAtIsNullAndCreatedAtBetweenOrderByCreatedAtDesc
+                        (startDateTime, endDateTime, pageable)
+                .stream()
+                .map(BoardResponseDto::new).toList();
     }
 
     @Transactional
@@ -133,8 +116,7 @@ public class BoardService {
 
 
     @Transactional
-    public BoardResponseDto deleteBoard(User user, Long boardId) {
-
+    public void deleteBoard(User user, Long boardId) {
         Board board = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
         );
@@ -146,7 +128,6 @@ public class BoardService {
         // 삭제시간 저장
         board.setDeletedAt(board.getModifiedAt());
         log.info(board.getDeletedAt().toString());
-        return new BoardResponseDto(board);
     }
 
 }

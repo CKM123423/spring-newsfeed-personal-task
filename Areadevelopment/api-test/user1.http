@@ -152,15 +152,15 @@ GET http://localhost:8080/api/boards/1
 
 
 ### 게시글 페이지 네이션
-GET http://localhost:8080/api/boards/recently/2
+GET http://localhost:8080/api/boards/recently/1
 
 
 ### 게시글 좋아요 순서 정렬 (10개고정)
-GET http://localhost:8080/api/boards/like/2
+GET http://localhost:8080/api/boards/like/1
 
 
-### 게시글 기간별 조회(2024-06-11 ~ 2024-06-11)
-GET http://localhost:8080/api/boards/date/1?startTime=2024-06-11&endTime=2024-06-11
+### 게시글 기간별 조회(2024-06-12 ~ 2024-06-12)
+GET http://localhost:8080/api/boards/date/1?startTime=2024-06-12&endTime=2024-06-12
 
 
 ### (1번) 게시글 수정

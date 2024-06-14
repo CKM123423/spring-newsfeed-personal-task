@@ -1,7 +1,9 @@
 package com.sparta.areadevelopment.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -9,19 +11,19 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardRequestDto {
+
     /**
-     * @String title
-     * 뉴스피드의 제목
+     * @String title 뉴스피드의 제목
      */
     @NotBlank(message = "제목을 입력해주세요.")
     String title;
+
     /**
-     * @String content
-     * 뉴스피드의 내용
+     * @String content 뉴스피드의 내용
      */
     @NotBlank(message = "내용을 입력해주세요.")
     String content;
-
-
 }

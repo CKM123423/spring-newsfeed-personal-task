@@ -5,11 +5,10 @@ import com.sparta.areadevelopment.dto.BoardResponseDto;
 import com.sparta.areadevelopment.entity.CustomUserDetails;
 import com.sparta.areadevelopment.service.BoardService;
 import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +34,6 @@ public class BoardController {
      */
     private final BoardService boardService;
 
-
     /**
      * 보드 생성 controller
      *
@@ -54,46 +52,56 @@ public class BoardController {
      * 뉴스피드 내용 불러오기
      */
     @GetMapping("/boards")
-    public Optional<Object> findAll() {
-        return boardService.findAll();
+    public ResponseEntity<?> findAllBoard() {
+        List<BoardResponseDto> list = boardService.findAllBoard();
+        if (list.isEmpty()) {
+            return ResponseEntity.ok().body("먼저 작성하여 소식을 알려보세요!");
+        } else {
+            return ResponseEntity.ok().body(list);
+        }
     }
-
 
     // 10개씩 페이지네이션하여, 각 페이지 당 뉴스피드 데이터가 10개씩 최신순으로 나오게 합니다.
     @GetMapping("/boards/recently/{page}")
-    public Optional<Object> findAllRecentlyPagination(@PathVariable int page) {
-
+    public ResponseEntity<?> findAllRecentlyPagination(@PathVariable int page) {
         // ex) 1페이지 조회시 -> index는 0으로 들어가므로 -1을 해줌
-        return boardService.findAllRecentlyPagination(page - 1);
+        List<BoardResponseDto> list = boardService.findAllRecentlyPagination(page - 1);
+        if (list.isEmpty()) {
+            return ResponseEntity.ok().body("먼저 작성하여 소식을 알려보세요!");
+        } else {
+            return ResponseEntity.ok().body(list);
+        }
     }
 
     // 좋아요 개수가 많은 순서대로 정렬 (페이지 당 뉴스피드 데이터 = 10개 고정)
     @GetMapping("/boards/like/{page}")
-    public Optional<Object> findAllLikesPagination(@PathVariable int page) {
-
-        return boardService.findAllLikesPagination(page - 1);
+    public ResponseEntity<?> findAllLikesPagination(@PathVariable int page) {
+        List<BoardResponseDto> list = boardService.findAllLikesPagination(page - 1);
+        if (list.isEmpty()) {
+            return ResponseEntity.ok().body("먼저 작성하여 소식을 알려보세요!");
+        } else {
+            return ResponseEntity.ok().body(list);
+        }
     }
 
     /**
      * 기간별 조회 ex ) String startTime = 2024-05-07 이런식으로 넣어서 테스트 합니다.
      */
     @GetMapping("/boards/date/{page}")
-    public Optional<Object> findAllDatePagination(
+    public ResponseEntity<?> findAllDatePagination(
             @PathVariable int page,
             @RequestParam String startTime,
             @RequestParam String endTime) {
 
-        // LocalDate.parse를 사용하여 문자열을 LocalDate로 파싱
-        LocalDate startDate = LocalDate.parse(startTime);
-        LocalDate endDate = LocalDate.parse(endTime);
+        List<BoardResponseDto> list = boardService.findAllDatePagination(page - 1, startTime,
+                endTime);
 
-        // LocalDateTime으로 변환
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
-
-        return boardService.findAllDatePagination(page - 1, startDateTime, endDateTime);
+        if (list.isEmpty()) {
+            return ResponseEntity.ok().body("먼저 작성하여 소식을 알려보세요!");
+        } else {
+            return ResponseEntity.ok().body(list);
+        }
     }
-
 
     @GetMapping("/boards/{boardId}")
     public BoardResponseDto findBoard(@PathVariable Long boardId) {
@@ -125,9 +133,10 @@ public class BoardController {
      * @return
      */
     @DeleteMapping("/boards/{boardId}")
-    public BoardResponseDto deleteBoard(
+    public ResponseEntity<String> deleteBoard(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long boardId) {
-        return boardService.deleteBoard(userDetails.getUser(), boardId);
+        boardService.deleteBoard(userDetails.getUser(), boardId);
+        return ResponseEntity.ok().body("게시글이 삭제 되었습니다.");
     }
 }

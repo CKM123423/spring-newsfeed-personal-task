@@ -1,8 +1,8 @@
 package com.sparta.areadevelopment.dto;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
@@ -10,11 +10,13 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * 이 부분은 실제로 컨트롤러에서 @Valid 를 썻을 때 검증되니 컨트롤러에서 테스트.
+ */
 class BoardRequestDtoTest {
 
     private static ValidatorFactory factory;
@@ -46,7 +48,7 @@ class BoardRequestDtoTest {
     }
 
     @Test
-    @DisplayName("Dto - 제녹 누락 테스트")
+    @DisplayName("Dto - 제목 누락 테스트")
     void test2() throws Exception {
         // Given
         String json = "{\"title\":\"\", \"content\":\"Board Content\"}";

@@ -12,6 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * 이 부분은 그저 생성자 테스트이고 안에 로직이 없으니 만들필요가 없다고 생각하고 후에 필드가 바뀐다면 유지보수 비용이 2배 이므로 하지 않는게 좋다고 생각함.
+ */
 @ExtendWith(MockitoExtension.class)
 public class BoardResponseDtoTest {
 

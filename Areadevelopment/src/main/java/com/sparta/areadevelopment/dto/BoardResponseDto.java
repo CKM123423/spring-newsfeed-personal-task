@@ -2,14 +2,18 @@ package com.sparta.areadevelopment.dto;
 
 import com.sparta.areadevelopment.entity.Board;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 뉴스피드의 정보를 보여주는 DTO
  */
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
+@Setter
 public class BoardResponseDto {
 
     /**
