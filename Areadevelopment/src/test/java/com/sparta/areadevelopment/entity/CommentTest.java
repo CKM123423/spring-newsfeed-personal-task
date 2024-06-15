@@ -1,6 +1,7 @@
 package com.sparta.areadevelopment.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.sparta.areadevelopment.dto.BoardRequestDto;
 import com.sparta.areadevelopment.dto.CommentRequestDto;
@@ -24,7 +25,6 @@ class CommentTest {
     @DisplayName("Comment 생성")
     void setUp() {
         user = Mockito.mock(User.class);
-        Mockito.when(user.getId()).thenReturn(1L);
 
         boardRequestDto = new BoardRequestDto();
         boardRequestDto.setTitle("Test Board Title");
@@ -94,11 +94,12 @@ class CommentTest {
     void test4() {
         // Given
         long userId1 = 1L;
-        long userid2 = 2L;
+        long userId2 = 2L;
+        when(user.getId()).thenReturn(1L);
 
         // When
         boolean isAuthorTrue = comment.isCommentAuthor(userId1);
-        boolean isAuthorFalse = comment.isCommentAuthor(userid2);
+        boolean isAuthorFalse = comment.isCommentAuthor(userId2);
 
         // Then
         assertThat(isAuthorTrue).isTrue();

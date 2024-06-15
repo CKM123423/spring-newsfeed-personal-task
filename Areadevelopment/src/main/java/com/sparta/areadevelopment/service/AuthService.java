@@ -1,5 +1,7 @@
 package com.sparta.areadevelopment.service;
+
 import com.sparta.areadevelopment.config.MailManager;
+
 import com.sparta.areadevelopment.dto.TokenDto;
 import com.sparta.areadevelopment.entity.User;
 import com.sparta.areadevelopment.enums.AuthEnum;
@@ -42,10 +44,11 @@ public class AuthService implements LogoutHandler {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MailManager mailManager;
-    private static String magickey="";
+    private static String magickey = "";
 
     /**
      * 로그인 메서드
+     *
      * @param username
      * @param password
      * @return
@@ -55,11 +58,12 @@ public class AuthService implements LogoutHandler {
         if (!userRepository.existsByUsername(username)) {
             throw new UsernameNotFoundException(username);
         }
-        Optional<User> user = userRepository.findUserByUsernameAndStatus(username, StatusEnum.ACTIVE);
+        Optional<User> user = userRepository.findUserByUsernameAndStatus(username,
+                StatusEnum.ACTIVE);
 
         bCryptPasswordEncoder.matches(password, user.get().getPassword());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                username,password);
+                username, password);
         // false가 활성화임
         user.get().setExpired(false);
 
@@ -76,15 +80,16 @@ public class AuthService implements LogoutHandler {
 
     /**
      * 토큰 재발급 메서드
+     *
      * @param refreshToken
      * @return
      */
     @Transactional
     public TokenDto reissue(String refreshToken) {
         Optional<User> user = userRepository.findByRefreshToken(refreshToken);
-        if(user!=null && !user.get().getRefreshToken().equals(refreshToken)){
+        if (user != null && !user.get().getRefreshToken().equals(refreshToken)) {
             throw new RuntimeException("잘못된 토큰입니다.");
-        }else if(user.get().isExpired()){
+        } else if (user.get().isExpired()) {
             throw new RuntimeException("폐지된 토큰입니다.");
         }
         Authentication authentication = tokenProvider.getAuthentication(refreshToken.substring(7));
@@ -95,13 +100,15 @@ public class AuthService implements LogoutHandler {
 
     /**
      * 로그아웃 메서드
+     *
      * @param request
      * @param response
      * @param authentication
      */
     @Transactional
     @Override
-    public void logout(HttpServletRequest request, HttpServletResponse response , Authentication authentication) {
+    public void logout(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) {
         String authHeader = request.getHeader(AuthEnum.ACCESS_TOKEN.getValue());
 
         if (authHeader == null && !authHeader.startsWith(AuthEnum.GRANT_TYPE.getValue())) {
@@ -115,12 +122,13 @@ public class AuthService implements LogoutHandler {
 
     /**
      * 메일 전송 메서드
+     *
      * @param email
      * @return
      */
-    public ResponseEntity<String> sendMail(String email){
+    public ResponseEntity<String> sendMail(String email) {
         UUID uuid = UUID.randomUUID();
-        String key = uuid.toString().substring(0,7);
+        String key = uuid.toString().substring(0, 7);
         String sub = "인증번호 메일 전송";
         String content = "인증번호 : " + key;
         mailManager.send(email, sub, content);
@@ -131,13 +139,14 @@ public class AuthService implements LogoutHandler {
 
     /**
      * 메일 인증 코드 검증 메서드
+     *
      * @param key
      * @param email
      * @return
      */
-    public ResponseEntity<String> checkMail(String key, String email){
+    public ResponseEntity<String> checkMail(String key, String email) {
         String insertKey = SHA256Util.getEncrypt(key, email);
-        if (!magickey.equals(insertKey)){
+        if (!magickey.equals(insertKey)) {
             return ResponseEntity.status(403).body("잘못된 키 입력입니다");
         }
         return ResponseEntity.status(202).body("인증 완료");

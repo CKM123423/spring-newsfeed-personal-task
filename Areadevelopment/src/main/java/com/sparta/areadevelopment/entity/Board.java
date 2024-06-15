@@ -27,7 +27,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
-@Setter
+//@Setter
 @Table(name = "boards")
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -88,5 +88,9 @@ public class Board {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deletedAt = LocalDateTime.now();
     }
 }

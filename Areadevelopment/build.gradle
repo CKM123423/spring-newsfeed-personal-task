@@ -25,7 +25,6 @@ dependencies {
     //이메일 인증
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
 
-
     // JWT
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
@@ -61,6 +60,9 @@ dependencies {
     // mysql 공통 의존성
     runtimeOnly 'com.mysql:mysql-connector-j'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.24.2'
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {

@@ -53,7 +53,7 @@ public class UserService {
         checkPassword(user.getPassword(), requestDto.getPassword());
         user.updateInfo(requestDto);
     }
-    
+
     public void updatePassword(Long userId, PasswordChangeRequestDto requestDto,
             User user) {
 
@@ -71,7 +71,7 @@ public class UserService {
 
         List<Board> boards = boardRepository.findByUserId(user.getId());
         boards.forEach(board -> {
-            board.setDeletedAt(LocalDateTime.now());
+            board.softDelete();
             board.getComments().forEach(Comment::delete); // 각 게시물의 댓글도 소프트 딜리트
         });
         user.softDelete();
@@ -85,7 +85,7 @@ public class UserService {
     }
 
     private static void getUserDetails(Long userId, User user) {
-        if(!Objects.equals(userId, user.getId())){
+        if (!Objects.equals(userId, user.getId())) {
             throw new UsernameNotFoundException(user.getUsername());
         }
     }
