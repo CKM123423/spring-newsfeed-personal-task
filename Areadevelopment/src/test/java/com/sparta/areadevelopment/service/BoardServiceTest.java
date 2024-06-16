@@ -1,6 +1,5 @@
 package com.sparta.areadevelopment.service;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -10,8 +9,6 @@ import com.sparta.areadevelopment.dto.BoardRequestDto;
 import com.sparta.areadevelopment.entity.Board;
 import com.sparta.areadevelopment.entity.User;
 import com.sparta.areadevelopment.repository.BoardRepository;
-import com.sparta.areadevelopment.repository.CommentRepository;
-import com.sparta.areadevelopment.repository.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,13 +26,6 @@ public class BoardServiceTest {
 
     @Mock
     private BoardRepository boardRepository;
-
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private CommentRepository commentRepository;
-
 
     @Test
     @DisplayName("findBoard - Board Not Found Fail Test")

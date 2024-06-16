@@ -45,7 +45,6 @@ public class CommentService {
      * @return 댓글의 상세정보 모음
      */
     public List<CommentResponseDto> getAllComments(Long boardId) {
-        Board board = getActiveBoardById(boardId);
         return commentRepository.findByDeletedAtNullAndBoardIdOrderByCreatedAtDesc(boardId)
                 .map(Collection::stream).orElseGet(Stream::empty).map(CommentResponseDto::new)
                 .toList();
@@ -109,8 +108,7 @@ public class CommentService {
      * @return 댓글 객체
      */
     private Comment getActiveCommentById(Long commentId) {
-        return commentRepository.findByIdAndDeletedAtNull(commentId)
+        return commentRepository.findByIdAndDeletedAtIsNull(commentId)
                 .orElseThrow(() -> new NullPointerException("선택한 댓글은 없거나 삭제되었습니다."));
     }
-
 }

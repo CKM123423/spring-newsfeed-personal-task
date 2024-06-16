@@ -37,13 +37,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("UPDATE Comment c SET c.likeCount = c.likeCount - 1 WHERE c.id = :commentId")
     void decrementLikeCount(@Param("commentId") Long commentId);
 
-    /**
-     * 삭제되지않은 댓글 하나의 정보를 불러옵니다.
-     *
-     * @param commentId 댓글 고유번호
-     * @return 댓글 하나의 정보
-     */
-    Optional<Comment> findByIdAndDeletedAtNull(Long commentId);
 
     /**
      * 삭제 처리 되어있지않고 해당 유저가 작성한? ????????????????????????????????????????????
@@ -53,4 +46,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @return
      */
     List<Comment> findByBoardIdAndDeletedAtIsNull(Long boardId);
+
+    /**
+     * 삭제되지않은 댓글 하나의 정보를 불러옵니다.
+     *
+     * @param commentId 댓글 고유번호
+     * @return 댓글 하나의 정보
+     */
+    Optional<Comment> findByIdAndDeletedAtIsNull(Long commentId);
 }
