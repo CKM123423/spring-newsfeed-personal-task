@@ -91,7 +91,7 @@ public class CommentServiceTest {
 
     @Test
     @DisplayName("deleteComment In isCommentAuthor - Fail Test")
-    void deleteComment_isCommentAuthor_Fail_Test() {
+    void softDeleteComment_isCommentAuthor_Fail_Test() {
         // Given
         Long userId = 1L;
         Long commentId = 20000L;

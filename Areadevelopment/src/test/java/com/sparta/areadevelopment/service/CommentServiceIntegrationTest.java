@@ -99,7 +99,7 @@ class CommentServiceIntegrationTest {
         commentRepository.save(comment);
     }
 
-    void createBoardAndSoftDelete(User user) {
+    void createBoardAndSoftSoftDelete(User user) {
         BoardRequestDto boardRequestDto = new BoardRequestDto(
                 "Test Title",
                 "Test Content"
@@ -109,13 +109,13 @@ class CommentServiceIntegrationTest {
         boardRepository.save(board);
     }
 
-    void createCommentAndSoftDelete(User user, Board board) {
+    void createCommentAndSoftSoftDelete(User user, Board board) {
         Comment deleteComment = new Comment(
                 "Test Comment",
                 board,
                 user
         );
-        deleteComment.delete();
+        deleteComment.softDelete();
         commentRepository.save(deleteComment);
     }
 
@@ -153,7 +153,7 @@ class CommentServiceIntegrationTest {
             createdComment(testUser2, board);
         }
 
-        this.createCommentAndSoftDelete(testUser1, board);
+        this.createCommentAndSoftSoftDelete(testUser1, board);
 
         // When
         List<CommentResponseDto> commentList = commentService.getAllComments(boardId);
@@ -194,7 +194,7 @@ class CommentServiceIntegrationTest {
 
     @Test
     @DisplayName("deleteComment - Success Test")
-    void deleteComment_Success_Test() {
+    void softDeleteComment_Success_Test() {
         // Given
         this.createdComment(testUser1, board);
         Long userId = testUser1.getId();

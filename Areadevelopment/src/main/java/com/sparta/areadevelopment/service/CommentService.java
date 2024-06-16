@@ -86,7 +86,7 @@ public class CommentService {
         if (!comment.isCommentAuthor(userId)) {
             throw new IllegalArgumentException("선택한 댓글은 다른 사용자가 작성한 댓글입니다.");
         }
-        comment.delete();
+        comment.softDelete();
         return "댓글 삭제 성공";
     }
 

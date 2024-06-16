@@ -28,13 +28,13 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
-    @Transactional
+//    @Transactional
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         if (!Objects.equals(user.getStatus(), StatusEnum.ACTIVE)
-                || user.isExpired()){
+                || user.isExpired()) {
             return null;
         }
 

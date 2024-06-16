@@ -81,7 +81,6 @@ Content-Type: application/json
 }
 
 
-### $2a$10$r0f8UJ1JU1oTPIdBf6QlmuYFI0ONq9bGFUBsbWz3gRy3yB1pmhDkC
 ### 유저 비밀번호 수정
 PUT http://localhost:8080/api/users/1/change-password
 Authorization:{{Access-Token}}
@@ -92,7 +91,6 @@ Content-Type: application/json
   "newPassword":"nada5011!@@#ASBA"
 }
 
-### $2a$10$M9wNXhbZNUvPW.ij2Nqhhu5m9GyojWZ08bAue5rcbe4qJUHLe3m0m
 ### 유저 비밀번호 수정 (원본으로)
 PUT http://localhost:8080/api/users/1/change-password
 Authorization:{{Access-Token}}

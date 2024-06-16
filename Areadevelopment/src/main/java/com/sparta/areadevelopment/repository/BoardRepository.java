@@ -48,5 +48,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     void decrementLikeCount(@Param("boardId") Long boardId);
 
 
-    List<Board> findByUserId(Long id);
+    List<Board> findByUserIdAndDeletedAtIsNull(Long id);
 }

@@ -129,7 +129,7 @@ public class BoardService {
                 boardId);
 
         for (Comment comment : commentList) {
-            comment.delete();
+            comment.softDelete();
         }
 
     }

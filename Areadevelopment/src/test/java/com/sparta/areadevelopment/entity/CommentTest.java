@@ -83,7 +83,7 @@ class CommentTest {
         // Given
 
         // When
-        comment.delete();
+        comment.softDelete();
 
         // Then
         assertThat(comment.getDeletedAt()).isNotNull();

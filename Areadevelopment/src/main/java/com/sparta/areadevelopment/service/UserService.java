@@ -9,8 +9,8 @@ import com.sparta.areadevelopment.entity.Board;
 import com.sparta.areadevelopment.entity.Comment;
 import com.sparta.areadevelopment.entity.User;
 import com.sparta.areadevelopment.repository.BoardRepository;
+import com.sparta.areadevelopment.repository.CommentRepository;
 import com.sparta.areadevelopment.repository.UserRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public Long signUp(SignupRequestDto requestDto) {
@@ -39,54 +40,67 @@ public class UserService {
     }
 
     public UserInfoDto getUserProfile(Long userId, User user) {
-        getUserDetails(userId, user);
+        compareUserIds(userId, user.getId());
 
         return new UserInfoDto(user.getUsername(), user.getNickname(),
                 user.getInfo(), user.getEmail());
     }
 
-
     @Transactional
-    public void updateProfile(Long userId, UpdateUserDto requestDto, User user) {
+    public void updateProfile(Long userId, UpdateUserDto requestDto, Long tokenUserId,
+            String encodingPassword) {
         // customUserDetails를 이용해서, 유저를 찾고 검증 로직을 안에다 넣자
-        getUserDetails(userId, user);
-        checkPassword(user.getPassword(), requestDto.getPassword());
+        compareUserIds(userId, tokenUserId);
+        checkPassword(requestDto.getPassword(), encodingPassword);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 없습니다."));
         user.updateInfo(requestDto);
     }
 
     public void updatePassword(Long userId, PasswordChangeRequestDto requestDto,
             User user) {
-
-        getUserDetails(userId, user);
-        checkPassword(user.getPassword(), requestDto.getOldPassword()); // 저장되어 있는 비밀번호와 맞는지 검증
+        compareUserIds(userId, user.getId());
+        checkPassword(requestDto.getOldPassword(), user.getPassword()); // 저장되어 있는 비밀번호와 맞는지 검증
         user.updatePassword(passwordEncoder.encode(requestDto.getNewPassword()));
         userRepository.save(user);
     }
 
     // 이 부분은 토큰이 필요한 부분이다.
     @Transactional
-    public void signOut(Long userId, SignOutRequestDto requestDto, User user) {
-        getUserDetails(userId, user);
-        checkPassword(user.getPassword(), requestDto.getPassword());
+    public void signOut(Long userId, SignOutRequestDto requestDto, Long tokenUserId,
+            String encodingPassword) {
+        compareUserIds(userId, tokenUserId);
+        checkPassword(requestDto.getPassword(), encodingPassword);
 
-        List<Board> boards = boardRepository.findByUserId(user.getId());
-        boards.forEach(board -> {
+        List<Board> boards = boardRepository.findByUserIdAndDeletedAtIsNull(userId);
+
+        for (Board board : boards) {
             board.softDelete();
-            board.getComments().forEach(Comment::delete); // 각 게시물의 댓글도 소프트 딜리트
-        });
+        }
+
+        List<Comment> comments = commentRepository.findByUserIdAndDeletedAtIsNull(userId);
+
+        for (Comment comment : comments) {
+            comment.softDelete();
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 유저 정보가 없습니다."));
+
         user.softDelete();
-        user.setExpired(true); // 회원 탈퇴시 true로 더 이상 다른 로직이 불가하게 만듭니다.
+        user.setExpired(true); // 회원 탈퇴시 로그아웃처리도 동시에 처리
     }
 
-    private void checkPassword(String encryptedPassword, String rawPassword) {
+    private void checkPassword(String rawPassword, String encryptedPassword) {
         if (!passwordEncoder.matches(rawPassword, encryptedPassword)) {
             throw new IllegalArgumentException("Invalid password.");
         }
     }
 
-    private static void getUserDetails(Long userId, User user) {
-        if (!Objects.equals(userId, user.getId())) {
-            throw new UsernameNotFoundException(user.getUsername());
+    private void compareUserIds(Long urlUserId, Long tokenUserId) {
+        if (!Objects.equals(urlUserId, tokenUserId)) {
+            throw new UsernameNotFoundException("유저 정보가 일치하지 않습니다.");
         }
     }
 }

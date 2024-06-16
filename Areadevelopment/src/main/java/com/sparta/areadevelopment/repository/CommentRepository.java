@@ -54,4 +54,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @return 댓글 하나의 정보
      */
     Optional<Comment> findByIdAndDeletedAtIsNull(Long commentId);
+
+    List<Comment> findByUserIdAndDeletedAtIsNull(Long userId);
 }

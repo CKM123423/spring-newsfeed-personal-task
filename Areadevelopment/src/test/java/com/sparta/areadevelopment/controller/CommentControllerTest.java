@@ -278,7 +278,7 @@ class CommentControllerTest {
     // Success
     // Delete http://localhost:8080/api/boards/{boardId}/comments/{commentId}
     @Test
-    void deleteComment() throws Exception {
+    void softDeleteComment() throws Exception {
         // Given
         this.mockUserSetup();
         String answer = "댓글 삭제 성공";

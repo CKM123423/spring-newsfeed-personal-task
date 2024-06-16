@@ -4,14 +4,17 @@ import com.sparta.areadevelopment.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * 회원가입 정보 보내는 DTO
  */
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SignupRequestDto {
 
     /**

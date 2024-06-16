@@ -1,5 +1,6 @@
 package com.sparta.areadevelopment.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class UserInfoDto {
 
     private String info;
 
+    @Email
     private String email;
 
     /**

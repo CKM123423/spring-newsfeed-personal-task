@@ -50,7 +50,7 @@ public class Comment extends Timestamped {
         this.content = dto.getContent();
     }
 
-    public void delete() {
+    public void softDelete() {
         setDeletedAt(LocalDateTime.now());
     }
 

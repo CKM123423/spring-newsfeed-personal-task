@@ -14,8 +14,8 @@ public class UpdateUserDto {
     /**
      * @String nickname 유저 별명
      */
-    @NotBlank(message = "Required Nickname")
     private String nickname;
+
     /**
      * @String email 이메일
      * @String info 한줄소개
@@ -24,6 +24,8 @@ public class UpdateUserDto {
     @Email
     private String email;
     private String info;
+
+    @NotBlank(message = "비밀번호는 필수 입력값입니다.")
     private String password;
 
     @Builder

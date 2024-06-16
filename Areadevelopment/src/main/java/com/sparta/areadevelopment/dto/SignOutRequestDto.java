@@ -2,14 +2,16 @@ package com.sparta.areadevelopment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * 회원탈퇴 DTO
  */
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SignOutRequestDto {
 
     /**
